@@ -812,7 +812,7 @@ int main(int argc, char** argv)
             continue;
           }
 
-          cv::Mat matA(pointSelNum, 6, CV_32F, cv::Scalar::all(0));
+          cv::Mat matA(pointSelNum, 6, CV_32F, cv::Scalar::all(0)); // 雅克比
           cv::Mat matAt(6, pointSelNum, CV_32F, cv::Scalar::all(0));
           cv::Mat matAtA(6, 6, CV_32F, cv::Scalar::all(0));
           cv::Mat matB(pointSelNum, 1, CV_32F, cv::Scalar::all(0));
@@ -880,8 +880,8 @@ int main(int argc, char** argv)
           cv::transpose(matA, matAt);
           matAtA = matAt * matA;
           matAtB = matAt * matB;
-          //求解matAtA * matX = matAtB
-          cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR);
+          //求解matAtA * matX = matAtB (最小二乘解)
+          cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR); // 高斯牛顿法
 
           if (iterCount == 0) {
             //特征值1*6矩阵
